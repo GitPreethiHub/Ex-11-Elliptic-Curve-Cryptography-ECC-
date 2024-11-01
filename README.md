@@ -5,42 +5,58 @@ To implement Elliptic Curve Cryptography (ECC) for encryption and decryption of 
 
 ## Algorithm Steps:
 
-1) Choose an elliptic curve equation over a finite field.
-
-2) Select a base point on the curve for generating keys.
-
-3) Generate private and public keys for both sender and receiver.
-
-4) Use the receiver's public key to encrypt the message.
-
-5) Decrypt the encrypted message using the receiver's private key.
+1) Define a mod_exp function for modular exponentiation.
+2) Define encrypt_message and decrypt_message functions, using mod_exp with a public and private key.
+3) Set parameters: a small modulus, public key, private key, and a numeric message representation.
+4) Display the plaintext.
+5) Encrypt the message using the public key.
+6) Print the encrypted result.
+7) Decrypt the message using the private key.
+8) Print the decrypted result.
 
 ## Program
 ```
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+
+int mod_exp(int base, int exp, int mod) {
+    int result = 1;
+    for (int i = 0; i < exp; i++) {
+        result = (result * base) % mod;
+    }
+    return result;
+}
+
+int encrypt_message(int message, int pub_key, int mod) {
+    return mod_exp(message, pub_key, mod);
+}
+
+int decrypt_message(int cipher, int priv_key, int mod) {
+    return mod_exp(cipher, priv_key, mod);
+}
 
 int main() {
     printf("Experiment 11 - Elliptic Curve Cryptography (ECC)\n");
-    printf("**************Preethi M 212222100037*************\n");
+    char plaintext[] = "preethi";
+    int mod = 17;
+    int pub_key = 5;
+    int priv_key = 3;
+    int message = 7;
 
-    int private_key = 5;
-    int base_point = 7;
-    int prime = 23;
-    int public_key = (base_point * private_key) % prime;
+    printf("Plaintext message: %s (numeric representation: %d)\n", plaintext, message);
+    int encrypted = encrypt_message(message, pub_key, mod);
+    printf("Encrypted message: %d\n", encrypted);
 
-    printf("Private Key: %d\n", private_key);
-    printf("Public Key: %d\n", public_key);
-
-    int shared_secret = (public_key * private_key) % prime;
-    printf("Shared Secret: %d\n", shared_secret);
+    int decrypted = decrypt_message(encrypted, priv_key, mod);
+    printf("Decrypted message (numeric): %d\n", decrypted);
 
     return 0;
 }
 
 ```
 ## Output
-![image](https://github.com/user-attachments/assets/1c1d4c0c-91e7-4fff-8425-6a68fcd99096)
+![image](https://github.com/user-attachments/assets/d609f3d8-88c0-48f8-8185-9200a7e7494d)
+
 
 ## Result
 The shared secret is successfully generated using Elliptic Curve Cryptography.
